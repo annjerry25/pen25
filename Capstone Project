@@ -1,0 +1,213 @@
+*A Jay’s Special Tees**
+
+**Penetration Testing**
+
+**For Artemis, Inc.**
+
+**January 17, 2023**
+
+By:  Alicia Jerry
+
+**Table of Contents**
+
+CONTENTS …………………………………………………………………………………..…2
+
+1.0 EXECUTIVE SUMMARY  …………………………………………………………………3
+
+1.1 SCOPE OF WORK  …………………………………………………………………………3
+
+1.2 PROJECT OBJECTIVES  …………………………………………………………………..4
+
+1.3 ASSUMPTION  ……………………………………………………………………………..4
+
+1.4 TIMELINE  ………………………………………………………………………………….4
+
+1.5 SUMMARY OF FINDINGS  ……………………………………………………………5 - 6
+
+1.6 TECHNICAL FINDINGS DETAILS  ………………………………………………………7
+
+1.7 SUMMARY OF REMEDIATION …………………………………………………………..8
+
+1.8 GLOSSARY …………………………………………………………………………… 9 - 10
+
+1.9 REFERENCES    ……………………………………………………………………………10
+
+**EXECUTIVE SUMMARY**
+
+Executive Summary
+
+A  Jay’s Special Tees was hired by Artemis, Inc. to perform a network penetration test of Artemis' external facing network in order to identify security flaws, determine the impact on Artemis' supply network, document all findings in a clear and repeatable manner, and provide remediation recommendations. The test was carried out using A Jay's Special Tees Security Penetration Testing Method. All testing was carried out by Alicia Jerry Information Security Analyst (ISA) in collaboration with Artemis' Information Technology (IT) staff members to ensure safe, orderly, and complete testing within the approved scope. The assessment was completed in January 2023.
+
+**SCOPE OF WORK**
+
+Scope of Work
+
+This assessment focused on outdated, unsupported, and unpatched hardware, with an emphasis on the external network. Unsuitably configured more recent network infrastructure, improper cloud data storage, website development, and file transfers are a few examples. In addition, we launched some phishing campaigns to see who is adhering to company policy.
+
+The tester also discovered shared folders with excessive permissions, implying that all internal network users have access to a significant amount of data. While file sharing between departments and users is essential for day-to-day business operations, file shares with broad permissions may result in the unintentional disclosure of confidential information.
+
+
+
+Even if a file share does not currently contain any sensitive information, someone may unknowingly place such data there, believing it is secure when it is not. This configuration should be changed so that users can only access what they need to perform their daily tasks.
+
+Finally, Artemis should develop a remediation plan based on the report's Remediation Summary section, addressing all high findings as soon as possible based on the needs of the business.
+
+Artemis should also consider conducting periodic vulnerability assessments if they aren't already.
+
+**PROJECT OBJECTIVES**
+
+Project Objectives
+
+With the aim of discovering undiscovered weaknesses, A Jay's Special Tees conducted testing under a "gray box" strategy from January 2, 2023, to January 16, 2023, in order to find as many vulnerabilities and misconfigurations as feasible. Testing was done from a non-evasive stance. Remote testing was carried out using a host that was set up especially for this evaluation.
+
+Each identified weakness was documented and manually investigated to determine exploitation and escalation potential. A Jay's Special Tees attempted to demonstrate the full scope of every vulnerability, including internal domain compromise. If A Jay's Special Tees were successful in gaining access to the internal network, Artemis enabled additional testing such as lateral movement and horizontal/vertical privilege escalation to demonstrate the impact of an internal network compromise.
+
+**ASSUMPTION**
+
+Assumption
+
+Entering into this assessment we had some concerns regarding the use of a (SSO) Single Sign On solution that leverage Microsoft Active Directory to authenticate users to other applications, namely SAP. SAP is the company's primary ERP system, we thought it might have some vulnerabilities. We were also concerned with admins not adhering to company policy and we felt a phishing vulnerability was most definitely a possibility. Also, they are still operating with hardware that is no longer supported or patched.
+
+**TIMELINE**
+
+Timeline
+
+The penetration test began on January 2nd and concluded on January 16 for a total of 15 days of testing.
+
+**SUMMARY OF FINDINGS**
+
+The external phase of the pentest concentrated on publicly accessible assets. Reconnaissance and scanning were performed to identify potential points of intrusion or malicious system modification. Using BurpSuite and the network scanner NMAP, attacks were launched from the A Jay’s network via the Internet to the externally accessible assets at Artemis. We tested IP address 10.0.0.153 from A Jay’s Special Tees.
+
+Actions Taken
+
+The analyst performed internet-level scanning and analysis to determine the risk level of Artemis’ externally accessible hosts and servers.
+
+From Zone: Internet
+
+Via: N/A
+
+To Zone: External Network
+
+Method: Internet penetration testing 
+
+Current Zone Activities: xxx.xxx.39.153
+
+The certificate for the server is not valid for the hostname. A certificate is issued to www.example.com.
+
+However, you can access the https certificate via this IP address. The certificate does not cover the hostname.
+
+HSTS is not mandated. Users are unable to connect to the application via unencrypted connections because the application does not prevent them from doing so. This opens the door to man-in-the-middle attacks on the site by users who click on unencrypted links. Add a response header called "Strict-Transport-Security" with an acceptable max-age expiration time to fix this.
+
+**Nmap Warnings:** 64-bit block cipher 3DES vulnerable to SWEET32 attack 
+
+Broken cipher RC4 is deprecated by RFC 7465
+
+Ciphersuite uses MD5 for message integrity
+
+Key exchange (dh 2048) of lower strength than certificate key
+
+Key exchange (ecdh_x25519) of lower strength than certificate key
+
+Summary of Findings continued..
+
+A Jay's Special Tees discovered five results in total during testing that represent a material risk to the information systems of Artemis, Inc. Risks below are all POSSIBLE.
+
+1. The Cisco hardware is unpatched and unsupported.This vulnerability only affects products that are no longer supported by the maintainer. 
+
+2. The new network, Fortigate, is not configured properly.A successful exploit could allow the attacker to retrieve sensitive information from the device using the default credential.
+
+3.  File transfers are placing Artemis at risk as well. This flaw allows an attacker to set up a malicious FTP server that can trick FTP clients into connecting back to a given IP address and port. This vulnerability could lead to FTP client scanning ports, which otherwise would not have been possible.
+
+4. We launched a phishing campaign and it was extremely successful. Training on how to maintain confidentiality is imperative to keep intruders away. Just asking nicely will get you a password reset is extremely dangerous. An unauthenticated attacker can generate a link that, if clicked by a logged-in user, can be redirected to a malicious page that could read or modify sensitive information, or expose the user to a phishing attack, with little impact on confidentiality and integrity.
+
+5. The internal SSO that leverages Microsoft Active Directory to authenticate users to SAP may expose company data. Unspecified vulnerability in the SAP CCMS / Database Monitors for Oracle allows attackers to obtain the database password via unknown vectors.
+
+6. This password hash was successfully cracked offline using the Hashcat tool, revealing the user's clear text password and granting access to Artemis’ domain with no more privileges than a regular domain user. The results are summarized by severity degree in the table that follows.
+
+**TECHNICAL FINDINGS DETAILS**
+
+| CRITICAL | HIGH | MEDIUM | LOW |
+| --- |  --- |  --- |  --- | 
+| 0 | 2 | 3 | 0 |
+
+| Vulnerability ID# | Summary | CVSS Severity |
+| --- |  --- |  --- | 
+| CVE-2020-35235 | **UNSUPPORTED WHEN ASSIGNED** vendor/elfinder/php/connector.minimal.php in the
+Secure-file-manager plugin through 2.5 for WordPress loads elFinder code without proper access
+control. Thus, any authenticated user can run the elFinder upload command to achieve remote code execution. NOTE: This vulnerability only affects products that are no longer supported by the maintainer. Published: December 13, 2020; 10:15:13 PM -0500 | 8.8 HIGH |
+| CVE-2022-20918 | A vulnerability in the Simple Network Management Protocol (SNMP) access controls for Cisco FirePOWER Software for Adaptive Security Appliance (ASA) FirePOWER module, Cisco Firepower Management Center (FMC) Software, and Cisco Next-Generation Intrusion Prevention System (NGIPS) Software could allow an unauthenticated, remote attacker to perform an SNMP GET request using a default credential. This vulnerability is due to the presence of a default credential for SNMP version 1 (SNMPv1) and SNMP version 2 (SNMPv2). An attacker could exploit this vulnerability by sending an SNMPv1 or SNMPv2 GET request to an affected device. A successful exploit could allow the attacker to retrieve sensitive information from the device using the default credential. This attack will only be successful if SNMP is configured, and the attacker can only perform SNMP GET requests; write access using SNMP is not allowed. Published: November 15, 2022; 4:15:29 PM -0500 | 7.5 HIGH |
+| CVE-2021-4189 | A flaw was found in Python, specifically in the FTP (File Transfer Protocol) client library in PASV (passive) mode. The issue is how the FTP client trusts the host from the PASV response by default. This flaw allows an attacker to set up a malicious FTP server that can trick FTP clients into connecting back to a given IP address and port. This vulnerability could lead to FTP client scanning ports, which otherwise would not have been possible. Published: August 24, 2022; 12:15:09 PM -0400 | 5.3 MEDIUM |
+| CVE-2013-7356 | Unspecified vulnerability in the SAP CCMS / Database Monitors for Oracle allows attackers to obtain the database password via unknown vectors. Published: April 10, 2014; 4:55:05 PM -0400 | 5.0 MEDIUM |
+| CVE-2022-41275 | In SAP Solution Manager (Enterprise Search) - versions 740, and 750, an unauthenticated attacker can generate a link that, if clicked by a logged-in user, can be redirected to a malicious page that could read or modify sensitive information, or expose the user to a phishing attack, with little impact on confidentiality and integrity. Published: December 12, 2022; 11:15:25 PM -0500 | 6.1 MEDIUM |
+
+**SUMMARY OF REMEDIATION**
+
+Summary of Remediation
+
+As a result of this evaluation, Artemis has several opportunities to strengthen its external network security. The following remediation efforts are prioritized, beginning with those that are likely to take the least amount of time and effort to complete. To avoid service disruptions or data loss, Artemis should carefully plan and test all remediation steps and mitigating controls.
+
+**Short Term** 
+
+[Finding 2] – Set strong passwords (24+ characters) for all SAP accounts.
+
+[Finding 5] – Change the SD-WAN Manager's default admin credentials.
+
+Because of the domain compromise, all users must change their passwords.
+
+**Medium Term**  
+
+[Finding 1] – Disable Cisco devices as much as possible.
+
+[Finding 1] – Consider using Fortigate devices in places where you previously used Cisco.
+
+[Finding 5] – Switch from MPLS to SD-WAN whenever possible for optimal performance.
+
+[Finding 2] – Increase the domain password policy's security.
+
+[Finding 3] – Consider restricting Microsoft Active Directory access to localhost or specific IP addresses.
+
+[Finding 4] – Conduct a network file share audit.
+
+[Finding 6 ] –Improve network monitoring and logging.
+
+**Long Term**  
+
+Conduct regular external network vulnerability assessments as well as domain password audits. Conduct regular Active Directory security audits.
+
+Educate system and network administrators and developers on best practices for security hardening. compromise.
+
+**GLOSSARY**
+
+# CLASSIFICATION DEFINITIONS
+
+## **Risk Classifications**
+
+| Level | Score | Description |
+| --- |  --- |  --- | 
+| Critical |  
+10 | The vulnerability poses an immediate threat to the organization. Successful exploitation may permanently affect the organization. Remediation should be immediately performed. |
+| High |  
+7-9 | The vulnerability poses an urgent threat to the organization, and remediation should be prioritized. |
+| Medium |  
+4-6 | Successful exploitation is possible and may result in notable disruption of business functionality. This vulnerability should be remediated when feasible. |
+| Low |  
+1-3 | The vulnerability poses a negligible/minimal threat to the organization. The presence of this vulnerability should be noted and remediated if possible. |
+| Informational |  
+0 | These findings have no clear threat to the organization, but may cause business processes to function differently than desired or reveal sensitive information about the company. |
+
+## **Exploitation Likelihood Classifications**
+
+| Likelihood | Description |
+| --- |  --- | 
+| Likely | Exploitation methods are well-known and can be performed using publicly available tools. Low-skilled attackers and automated tools could successfully exploit the vulnerability with minimal difficulty. |
+| Possible | Exploitation methods are well-known, may be performed using public tools, but require configuration. Understanding of the underlying system is required for successful exploitation. |
+| Unlikely | Exploitation requires deep understanding of the underlying systems or advanced technical skills. Precise conditions may be required for successful exploitation. |
+
+**REFERENCES**
+
+**[https://nvd.nist.gov/](https://nvd.nist.gov/)**
+
+**[https://www.sans.org/white-papers/33343/](https://www.sans.org/white-papers/33343/)**
+
+**[https://www.softwaretestinghelp.com/penetration-testing-guide/](https://www.softwaretestinghelp.com/penetration-testing-guide/)**
+
